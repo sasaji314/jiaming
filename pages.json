@@ -1,0 +1,107 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+		    "path" : "pages/static/login",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "登录",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+        ,{
+            "path" : "pages/static/register",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "注册",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/cart/cart",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "购物车",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/map/map",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "地图",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/video/video",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "视频",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+			"color": "#333333",
+			"selectedColor": "#f06c7a",
+			"borderStyle": "black",
+			"backgroundColor": "#ffffff",
+			"list": [{
+					"pagePath": "pages/index/index",
+					// "iconPath": "static/img/tabBar/home.png",
+					// "selectedIconPath": "static/img/tabBar/home-on.png",
+					"text": "首页"
+				},
+				{
+					"pagePath": "pages/map/map",
+					// "iconPath": "static/img/tabBar/category.png",
+					// "selectedIconPath": "static/img/tabBar/category-on.png",
+					"text": "地图"
+				},
+				{
+					"pagePath": "pages/video/video",
+					// "iconPath": "static/img/tabBar/category.png",
+					// "selectedIconPath": "static/img/tabBar/category-on.png",
+					"text": "视频"
+				},
+				{
+					"pagePath": "pages/cart/cart",
+					// "iconPath": "static/img/tabBar/cart.png",
+					// "selectedIconPath": "static/img/tabBar/cart-on.png",
+					"text": "购物车"
+				},
+				{
+					"pagePath": "pages/user/user",
+					// "iconPath": "static/img/tabBar/user.png",
+					// "selectedIconPath": "static/img/tabBar/user-on.png",
+					"text": "我的"
+				}
+			]
+		}
+}
