@@ -6,7 +6,7 @@
 			
 			<view class="info">
 				
-				<uni-row class="demo-uni-row" :width="nvueWidth">
+				<uni-row class="demo-uni-row">
 					<uni-col :span="8">
 						<view class="left">
 							<view class="LT">
@@ -57,7 +57,7 @@
 				</uni-row>
 			</view>
 			<view class="button">
-				<button type="primary">确认开通</button>
+				<button type="primary" @click="levelup" style="background-color: #EB4621;">确认开通</button>
 			</view>
 		</view>
 	</view>
@@ -71,7 +71,9 @@
 			}
 		},
 		methods: {
-			
+			levelup(){
+				
+			}
 		}
 	}
 </script>
@@ -127,6 +129,5 @@
 	.button{
 		padding: 10% 10% 0 10%;
 		border-radius: 25px;
-		color:#EB4621;
 	}
 </style>

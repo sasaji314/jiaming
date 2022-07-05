@@ -24,63 +24,8 @@
 			</view>
 		</view>
 		<!-- 底部菜单 -->
-		<view class="footer">
-			<view class="icons">
-				<view class="box" @tap="share">
-					<view class="icon fenxiang"></view>
-					<view class="text">分享</view>
-				</view>
-				<view class="box" @tap="toChat">
-					<view class="icon kefu"></view>
-					<view class="text">客服</view>
-				</view>
-				<view class="box" @tap="keep">
-					<view class="icon" :class="[isKeep?'shoucangsel':'shoucang']"></view>
-					<view class="text">{{isKeep?'已':''}}收藏</view>
-				</view>
-			</view>
-			<view class="btn">
-				<view class="joinCart" @tap="joinCart">加入购物车</view>
-				<view class="buy" @tap="buy">立即购买</view>
-			</view>
-		</view>
-		<!-- share弹窗 -->
-		<view class="share" :class="shareClass" @touchmove.stop.prevent="discard" @tap="hideShare">
-			<view class="mask"></view>
-			<view class="layer" @tap.stop="discard">
-				<view class="h1">分享</view>
-				<view class="list">
-					<view class="box">
-						<image src="../../static/img/share/wx.png"></image>
-						<view class="title">
-							微信好友
-						</view>
-					</view>
-					<view class="box">
-						<image src="../../static/img/share/pyq.png"></image>
-						<view class="title">
-							朋友圈
-						</view>
-					</view>
-					<view class="box">
-						<image src="../../static/img/share/wb.png"></image>
-						<view class="title">
-							新浪微博
-						</view>
-					</view>
-					<view class="box">
-						<image src="../../static/img/share/qq.png"></image>
-						<view class="title">
-							QQ
-						</view>
-					</view>
-				</view>
-				<view class="btn" @tap="hideShare">
-					取消
-				</view>
-			</view>
-			
-		</view>
+		<uni-goods-nav class="goods-carts" :fill="true" :options="options" :button-group="ButtonGroup" @click="onClick"
+		@buttonClick="buttonClick" />
 		<!-- 服务-模态层弹窗 -->
 		<view class="popup service" :class="serviceClass" @touchmove.stop.prevent="discard" @tap="hideService">
 			<!-- 遮罩层 -->
@@ -188,10 +133,10 @@
 			</view>
 		</view> -->
 		<!-- 详情 -->
-		<view class="description">
+		<!-- <view class="description">
 			<view class="title">———— 商品详情 ————</view>
 			<view class="content"><rich-text :nodes="descriptionStr"></rich-text></view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -244,7 +189,26 @@ export default {
 			selectSpec:null,//选中规格
 			isKeep:false,//收藏
 			//商品描述html
-			descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>'
+			descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>',
+			//底部导航
+			options: [{
+					icon: 'shop',
+					text: '店铺',
+			}, {
+					icon: 'cart',
+					text: '购物车',
+			}],
+			ButtonGroup: [{
+				text: '加入购物车',
+				backgroundColor: 'linear-gradient(90deg, #FFCD1E, #FF8A18)',
+				color: '#fff'
+			},
+			{
+				text: '立即购买',
+				backgroundColor: 'linear-gradient(90deg, #FE6035, #EF1224)',
+				color: '#fff'
+			}
+			],
 		};
 	},
 	onLoad(option) {
@@ -255,9 +219,9 @@ export default {
 		//option为object类型，会序列化上个页面传递的参数
 		console.log(option.cid); //打印出上个页面传递的参数。
 	},
-	onReady(){
-		this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
-	},
+	// onReady(){
+	// 	this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
+	// },
 	// onPageScroll(e) {
 	// 	//锚点切换
 	// 	this.selectAnchor = e.scrollTop>=this.anchorlist[2].top?2:e.scrollTop>=this.anchorlist[1].top?1:0;
@@ -282,31 +246,20 @@ export default {
 		swiperChange(event) {
 			this.currentSwiper = event.detail.current;
 		},
-		//消息列表
-		toMsg(){
-			uni.navigateTo({
-				url:'../msg/msg'
+		//点击购物车/店铺
+		onClick(e) {
+			uni.showToast({
+				title: `点击${e.content.text}`
 			})
+			if(e.content.text == "购物车"){
+				uni.navigateTo({
+					url:'../car/car',
+				})
+			}
 		},
-		// 客服
-		toChat(){
-			uni.navigateTo({
-				url:"../msg/chat/chat?name=客服008"
-			})
-		},
-		// 分享
-		share(){
-			this.shareClass = 'show';
-		},
-		hideShare(){
-			this.shareClass = 'hide';
-			setTimeout(() => {
-				this.shareClass = 'none';
-			}, 150);
-		},
-		//收藏
-		keep(){
-			this.isKeep = this.isKeep?false:true;
+		//点击购买/加入购物车按钮
+		buttonClick(e) {
+			console.log(e)
 		},
 		// 加入购物车
 		joinCart(){
@@ -327,24 +280,20 @@ export default {
 			this.toConfirmation();
 		},
 		//跳转确认订单页面
-		toConfirmation(){
-			let tmpList=[];
-			let goods = {id:this.goodsData.id,img:'../../static/img/goods/p1.jpg',name:this.goodsData.name,spec:'规格:'+this.goodsData.spec[this.selectSpec],price:this.goodsData.price,number:this.goodsData.number};
-			tmpList.push(goods);
-			uni.setStorage({
-				key:'buylist',
-				data:tmpList,
-				success: () => {
-					uni.navigateTo({
-						url:'../order/confirmation'
-					})
-				}
-			})
-		},
-		//跳转评论列表
-		showComments(goodsid){
-			
-		},
+		// toConfirmation(){
+		// 	let tmpList=[];
+		// 	let goods = {id:this.goodsData.id,img:'../../static/img/goods/p1.jpg',name:this.goodsData.name,spec:'规格:'+this.goodsData.spec[this.selectSpec],price:this.goodsData.price,number:this.goodsData.number};
+		// 	tmpList.push(goods);
+		// 	uni.setStorage({
+		// 		key:'buylist',
+		// 		data:tmpList,
+		// 		success: () => {
+		// 			uni.navigateTo({
+		// 				url:'../order/confirmation'
+		// 			})
+		// 		}
+		// 	})
+		// },
 		//选择规格
 		setSelectSpec(index){
 			this.selectSpec = index;
@@ -361,30 +310,30 @@ export default {
 			this.goodsData.number++;
 		},
 		//跳转锚点
-		toAnchor(index){
-			this.selectAnchor = index;
-			uni.pageScrollTo({scrollTop: this.anchorlist[index].top,duration: 200});
-		},
+		// toAnchor(index){
+		// 	this.selectAnchor = index;
+		// 	uni.pageScrollTo({scrollTop: this.anchorlist[index].top,duration: 200});
+		// },
 		//计算锚点高度
-		calcAnchor(){
-			this.anchorlist=[
-				{name:'主图',top:0},
-				{name:'评价',top:0},
-				{name:'详情',top:0}
-			]
-			let commentsView = uni.createSelectorQuery().select("#comments");
-			commentsView.boundingClientRect((data) => {
-				let statusbarHeight = 0;
-				//APP内还要计算状态栏高度
-				// #ifdef APP-PLUS
-					statusbarHeight = plus.navigator.getStatusbarHeight()
-				// #endif
-				let headerHeight = uni.upx2px(100);
-				this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
-				this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
+		// calcAnchor(){
+		// 	this.anchorlist=[
+		// 		{name:'主图',top:0},
+		// 		{name:'评价',top:0},
+		// 		{name:'详情',top:0}
+		// 	]
+		// 	let commentsView = uni.createSelectorQuery().select("#comments");
+		// 	commentsView.boundingClientRect((data) => {
+		// 		let statusbarHeight = 0;
+		// 		//APP内还要计算状态栏高度
+		// 		// #ifdef APP-PLUS
+		// 			statusbarHeight = plus.navigator.getStatusbarHeight()
+		// 		// #endif
+		// 		let headerHeight = uni.upx2px(100);
+		// 		this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
+		// 		this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
 				
-			}).exec();
-		},
+		// 	}).exec();
+		// },
 		//返回上一页
 		back() {
 			uni.navigateBack();
@@ -908,84 +857,99 @@ page {
 		
 	}
 }
-.share{
-	display: none;
-	&.show {
-		display: block;
-		.mask{
-			animation: showPopup 0.15s linear both;
-		}
-		.layer {
-			animation: showLayer 0.15s linear both;
-		}
+
+.goods-carts {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+		position: fixed;
+		left: 0;
+		right: 0;
+		/* #ifdef H5 */
+		left: var(--window-left);
+		right: var(--window-right);
+		/* #endif */
+		bottom: 0;
 	}
-	&.hide {
-		display: block;
-		.mask{
-			animation: hidePopup 0.15s linear both;
-		}
+// .share{
+// 	display: none;
+// 	&.show {
+// 		display: block;
+// 		.mask{
+// 			animation: showPopup 0.15s linear both;
+// 		}
+// 		.layer {
+// 			animation: showLayer 0.15s linear both;
+// 		}
+// 	}
+// 	&.hide {
+// 		display: block;
+// 		.mask{
+// 			animation: hidePopup 0.15s linear both;
+// 		}
 		
-		.layer {
-			animation: hideLayer 0.15s linear both;
-		}
-	}
-	&.none {
-		display: none;
-	}
-	.mask{
-		background-color: rgba(0,0,0,.5);
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top:0;
-		z-index: 11;
-	}
-	.layer{
-		width: 92%;
-		position: fixed;
-		z-index: 12;
-		padding: 0 4%;
-		top: 100%;
-		background-color: rgba(255,255,255,0.9);
-		.list{
-			width: 100%;
-			display: flex;
-			padding:10upx 0 30upx 0;
-			.box{
-				width: 25%;
-				display: flex;
-				justify-content: center;
-				flex-wrap: wrap;
-				image{
-					width: 13.8vw;
-					height: 13.8vw;
-				}
-				.title{
-					margin-top: 10upx;
-					display: flex;
-					justify-content: center;
-					width: 100%;
-					font-size: 26upx;
-				}
-			}
-		}
-		.btn{
-			width: 100%;
-			height: 100upx;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 28upx;
-			border-top: solid 1upx #666666;
-		}
-		.h1{
-			width: 100%;
-			height: 80upx;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 34upx;
-		}
-	}
-}
+// 		.layer {
+// 			animation: hideLayer 0.15s linear both;
+// 		}
+// 	}
+// 	&.none {
+// 		display: none;
+// 	}
+// 	.mask{
+// 		background-color: rgba(0,0,0,.5);
+// 		position: fixed;
+// 		width: 100%;
+// 		height: 100%;
+// 		top:0;
+// 		z-index: 11;
+// 	}
+// 	.layer{
+// 		width: 92%;
+// 		position: fixed;
+// 		z-index: 12;
+// 		padding: 0 4%;
+// 		top: 100%;
+// 		background-color: rgba(255,255,255,0.9);
+// 		.list{
+// 			width: 100%;
+// 			display: flex;
+// 			padding:10upx 0 30upx 0;
+// 			.box{
+// 				width: 25%;
+// 				display: flex;
+// 				justify-content: center;
+// 				flex-wrap: wrap;
+// 				image{
+// 					width: 13.8vw;
+// 					height: 13.8vw;
+// 				}
+// 				.title{
+// 					margin-top: 10upx;
+// 					display: flex;
+// 					justify-content: center;
+// 					width: 100%;
+// 					font-size: 26upx;
+// 				}
+// 			}
+// 		}
+// 		.btn{
+// 			width: 100%;
+// 			height: 100upx;
+// 			display: flex;
+// 			justify-content: center;
+// 			align-items: center;
+// 			font-size: 28upx;
+// 			border-top: solid 1upx #666666;
+// 		}
+// 		.h1{
+// 			width: 100%;
+// 			height: 80upx;
+// 			display: flex;
+// 			justify-content: center;
+// 			align-items: center;
+// 			font-size: 34upx;
+// 		}
+// 	}
+// }
 </style>

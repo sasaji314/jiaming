@@ -1,4 +1,5 @@
 import App from './App'
+import BaiduMap from 'vue-baidu-map'
 
 // #ifndef VUE3
 import Vue from 'vue'
@@ -19,3 +20,10 @@ export function createApp() {
   }
 }
 // #endif
+
+
+
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: '7qImsPSr94NmBsgvwdut0T7GPxwDy85e'
+})

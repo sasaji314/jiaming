@@ -24,13 +24,20 @@
 				<view class="username" @tap="toLogin">欢迎你，{{user.username}}</view>
 			</view>
 		</view>
-		<!-- VIP banner -->
-		<view class="VIP"  @tap="toVIP">
+		<!-- VIP banner 未登录-->
+		<view class="VIP"  @tap="toVIP" v-if="user.privilege == '0'">
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
 			</view>
 			<view class="title">开通VIP会员</view>
 			<view class="tis">点击立即开通会员享受尊贵权益</view>
+		</view>
+		<!-- VIP banner 已登录-->
+		<view class="VIP" v-if="user.privilege == '1'">
+			<view class="img">
+				<image src="/static/img/VIP.png"></image>
+			</view>
+			<view class="title">尊贵的会员您好</view>
 		</view>
 		<!-- 订单-余额 -->
 		<view class="order">
@@ -41,31 +48,6 @@
 						<view class="icon" :class="row.icon"></view>
 					</view>
 					<view class="text">{{row.text}}</view>
-				</view>
-			</view>
-			<!-- 余额 -->
-			<view class="balance-info">
-				<view class="left">
-					<view class="box">
-						<view class="num">{{user.integral}}</view>
-						<view class="text">积分</view>
-					</view>
-					<view class="box">
-						<view class="num">{{user.envelope}}</view>
-						<view class="text">佣金</view>
-					</view>
-					<view class="box">
-						<view class="num">{{user.balance}}</view>
-						<view class="text">余额</view>
-					</view>
-				</view>
-				<view class="right">
-					<view class="box" @tap="toDeposit">
-						<view class="img">
-							<view class="icon chongzhi"></view>
-						</view>
-						<view class="text">充值</view>
-					</view>
 				</view>
 			</view>
 		</view>
@@ -86,6 +68,7 @@
 				showHeader:true,
 				//个人信息,
 				user:{
+					privilege:'0',
 					username:'游客1002',
 					face:'/static/img/face.jpg',
 					signature:'点击昵称跳转登录/注册页',
@@ -158,26 +141,14 @@
 					url:'../user/vip/vip'
 				})
 			},
-			toOrderList(index){
-				uni.setStorageSync('tbIndex',index);
-				uni.navigateTo({url:'../../user/order_list/order_list?tbIndex='+index}) 
-			},
+			// toOrderList(index){
+			// 	uni.setStorageSync('tbIndex',index);
+			// 	uni.navigateTo({url:'../../user/order_list/order_list?tbIndex='+index}) 
+			// },
 			toSetting(){
 				uni.navigateTo({
 					url:'../../user/setting/setting'
 				})
-			},
-			toMyQR(){
-				uni.navigateTo({
-					url:'../../user/myQR/myQR'
-				})
-			},
-			toLogin(){
-				uni.showToast({title: '请登录',icon:"none"});
-				uni.navigateTo({
-					url:'../../login/login'
-				})
-				this.isfirst = false;
 			},
 			isLogin(){
 				//实际应用中,用户登录状态应该用token等方法去维持登录状态.

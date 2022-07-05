@@ -41,38 +41,7 @@
 				<view class="text">{{ row.name }}</view>
 			</view>
 		</view>
-		<!-- 广告图 -->
-		
-<!-- 		<view class="banner"><image src="/static/img/banner.jpg"></image></view> -->
-		<!-- 活动区 -->
-		
-		<!-- <view class="promotion">
-			<view class="text">优惠专区</view>
-			<view class="list">
-				<view
-					class="column"
-					v-for="(row, index) in Promotion"
-					@tap="toPromotion(row)"
-					:key="index"
-				>
-					<view class="top">
-						<view class="title">{{ row.title }}</view>
-						<view class="countdown" v-if="row.countdown">
-							<view>{{ row.countdown.h }}</view>
-							:
-							<view>{{ row.countdown.m }}</view>
-							:
-							<view>{{ row.countdown.s }}</view>
-						</view>
-					</view>
-					<view class="left">
-						<view class="ad">{{ row.ad }}</view>
-						<view class="into">点击进入</view>
-					</view>
-					<view class="right"><image :src="row.img"></image></view>
-				</view>
-			</view>
-		</view> -->
+
 		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view class="title">
@@ -102,8 +71,6 @@
 
 <script>
 var ttt = 0;
-//高德SDK
-import amap from '@/common/SDK/amap-wx.js';
 export default {
 	data() {
 		return {
@@ -242,37 +209,17 @@ export default {
 			this.productList.push(p);
 		}
 	},
-	onLoad() {
-		
-		// #ifdef APP-PLUS
-		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
-		this.nVueTitle.onMessage(res => {
-			let type = res.data.type;
-			if(type=='focus'){
-				this.toSearch();
-			}
-		});
-		this.showHeader = false;
-		this.statusHeight = plus.navigator.getStatusbarHeight();
-		// #endif
-		this.amapPlugin = new amap.AMapWX({
-			//高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
-			key: '7c235a9ac4e25e482614c6b8eac6fd8e'
-		});
-		//定位地址
-		this.amapPlugin.getRegeo({
-			success: data => {
-				this.city = data[0].regeocodeData.addressComponent.city.replace(/市/g, ''); //把"市"去掉
-				// #ifdef APP-PLUS
-				this.nVueTitle.postMessage({type: 'location',city:this.city});
-				// #endif
-			}
-		});
-		//开启定时器
-		this.Timer();
-		//加载活动专区
-		this.loadPromotion();
-	},
+	// onLoad() {
+	// 	// this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
+	// 	// this.nVueTitle.onMessage(res => {
+	// 	// 	let type = res.data.type;
+	// 	// 	if(type=='focus'){
+	// 	// 		this.toSearch();
+	// 	// 	}
+	// 	// });
+	// 	this.showHeader = true;
+	// 	this.statusHeight = plus.navigator.getStatusbarHeight();
+	// },
 	methods: {
 		search(res) {
 			uni.showToast({
@@ -307,96 +254,6 @@ export default {
 				icon: 'none'
 			})
 		},
-		//加载Promotion 并设定倒计时,,实际应用中应该是ajax加载此数据。
-		loadPromotion() {
-			let cutTime = new Date();
-			let yy = cutTime.getFullYear(),
-				mm = cutTime.getMonth() + 1,
-				dd = cutTime.getDate();
-			let tmpcountdown = yy + '/' + mm + '/' + dd + ' 23:59:59';
-			let tmpPromotion = [
-				{
-					title: '整点秒杀',
-					ad: '整天秒杀专区',
-					img: '/static/img/s1.jpg',
-					countdown: false
-				},
-				{
-					title: '限时抢购',
-					ad: '每天23点上线',
-					img: '/static/img/s2.jpg',
-					countdown: tmpcountdown
-				} //countdown为目标时间，程序会获取当前时间倒数
-			];
-			//检查倒计时
-			for (let i = 0; i < tmpPromotion.length; i++) {
-				let row = tmpPromotion[i];
-				if (row.countdown) {
-					let h = '00',
-						m = '00',
-						s = '00';
-					let currentTime = new Date();
-					let cutoffTime = new Date(tmpcountdown);
-					if (!(currentTime >= cutoffTime)) {
-						let countTime = parseInt(
-							(cutoffTime.getTime() - currentTime.getTime()) / 1000
-						);
-						h = parseInt(countTime / 3600);
-						m = parseInt((countTime % 3600) / 60);
-						s = countTime % 60;
-						h = h < 10 ? '0' + h : h;
-						m = m < 10 ? '0' + m : m;
-						s = s < 10 ? '0' + s : s;
-					}
-					tmpPromotion[i].countdown = { h: h, m: m, s: s };
-				}
-			}
-			this.Promotion = tmpPromotion;
-		},
-		//定时器
-		Timer() {
-			setInterval(() => {
-				if (this.Promotion.length > 0) {
-					for (let i = 0; i < this.Promotion.length; i++) {
-						let row = this.Promotion[i];
-						if (row.countdown) {
-							if (
-								!(
-									row.countdown.h == 0 &&
-									row.countdown.m == 0 &&
-									row.countdown.s == 0
-								)
-							) {
-								if (row.countdown.s > 0) {
-									row.countdown.s--;
-									row.countdown.s =
-										row.countdown.s < 10
-											? '0' + row.countdown.s
-											: row.countdown.s;
-								} else if (row.countdown.m > 0) {
-									row.countdown.m--;
-									row.countdown.m =
-										row.countdown.m < 10
-											? '0' + row.countdown.m
-											: row.countdown.m;
-									row.countdown.s = 59;
-								} else if (row.countdown.h > 0) {
-									row.countdown.h--;
-									row.countdown.h =
-										row.countdown.h < 10
-											? '0' + row.countdown.h
-											: row.countdown.h;
-									row.countdown.m = 59;
-									row.countdown.s = 59;
-								}
-								this.Promotion[i].countdown = row.countdown;
-							}
-						}
-					}
-				}
-			}, 1000);
-		},
-		//搜索跳转
 		toSearch() {
 			uni.showToast({ title: '建议跳转到新页面做搜索功能' });
 		},
@@ -411,10 +268,6 @@ export default {
 			uni.navigateTo({
 				url: '../../goods/goods-list/goods-list?cid='+e.id+'&name='+e.name
 			});
-		},
-		//推荐商品跳转
-		toPromotion(e) {
-			uni.showToast({ title: e.title, icon: 'none' });
 		},
 		//商品跳转
 		toGoods(e) {
@@ -568,98 +421,7 @@ page{position: relative;background-color: #fff;}
 		}
 	}
 }
-.banner {
-	width: 92%;
-	margin: 40upx 4%;
-	image {
-		width: 100%;
-		height: 20vw;
-		border-radius: 10vw;
-		box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.3);
-	}
-}
-.promotion {
-	width: 92%;
-	margin: 0 4%;
-	.text {
-		width: 100%;
-		height: 60upx;
-		font-size: 34upx;
-		font-weight: 600;
-		margin-top: -10upx;
-	}
-	.list {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		.column {
-			width: 43%;
-			padding: 15upx 3%;
-			background-color: #ebf9f9;
-			border-radius: 10upx;
-			overflow: hidden;
-			display: flex;
-			justify-content: space-between;
-			flex-wrap: wrap;
-			.top {
-				width: 100%;
-				height: 40upx;
-				display: flex;
-				align-items: center;
-				margin-bottom: 5upx;
-				.title {
-					font-size: 30upx;
-				}
-				.countdown {
-					margin-left: 20upx;
-					display: flex;
-					height: 40upx;
-					display: flex;
-					align-items: center;
-					font-size: 20upx;
-					view {
-						height: 30upx;
-						background-color: #f06c7a;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						color: #fff;
-						border-radius: 4upx;
-						margin: 0 4upx;
-						padding: 0 2upx;
-					}
-				}
-			}
-			.left {
-				width: 50%;
-				height: 18.86vw;
-				display: flex;
-				flex-wrap: wrap;
-				align-content: space-between;
-				.ad {
-					margin-top: 5upx;
-					width: 100%;
-					font-size: 22upx;
-					color: #acb0b0;
-				}
-				.into {
-					width: 100%;
-					font-size: 24upx;
-					color: #aaa;
-					margin-bottom: 5upx;
-				}
-			}
-			.right {
-				width: 18.86vw;
-				height: 18.86vw;
-				image {
-					width: 18.86vw;
-					height: 18.86vw;
-				}
-			}
-		}
-	}
-}
+
 .goods-list {
 	// background-color: #f4f4f4;
 	.title {
