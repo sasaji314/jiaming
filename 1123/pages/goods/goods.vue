@@ -93,7 +93,7 @@
 			
 			<view class="row">
 				<view class="text">配送</view>
-				<view class="content">现在下单后天即可送达</view>
+				<view class="content">现在下单预计后天即可送达</view>
 			</view>
 			<view class="row" @tap="showSpec(false)">
 				<view class="text">选择</view>
@@ -259,7 +259,7 @@ export default {
 		},
 		//点击购买/加入购物车按钮
 		buttonClick(e) {
-			console.log(e)
+			console.log(e.content.text);
 		},
 		// 加入购物车
 		joinCart(){

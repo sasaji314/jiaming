@@ -5,7 +5,7 @@
 				{{target.text}}
 				<view v-if="target.orderbyicon" class="icon" :class="target.orderbyicon[target.orderby]"></view>
 			</view>
-		</view> 
+		</view>
 		<!-- 占位 -->
 		<view class="place"></view>
 		<!-- 商品列表 -->

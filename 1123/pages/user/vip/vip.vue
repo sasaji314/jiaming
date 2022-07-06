@@ -6,7 +6,7 @@
 			
 			<view class="info">
 				
-				<uni-row class="demo-uni-row">
+				<uni-row>
 					<uni-col :span="8">
 						<view class="left">
 							<view class="LT">

@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		<!-- VIP banner 未登录-->
-		<view class="VIP"  @tap="toVIP" v-if="user.privilege == '0'">
+		<view class="VIP"  @tap="toVIP" v-if="user.privilege == '1'">
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
 			</view>
@@ -33,7 +33,7 @@
 			<view class="tis">点击立即开通会员享受尊贵权益</view>
 		</view>
 		<!-- VIP banner 已登录-->
-		<view class="VIP" v-if="user.privilege == '1'">
+		<view class="VIP" v-if="user.privilege == '2'">
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
 			</view>
@@ -68,7 +68,7 @@
 				showHeader:true,
 				//个人信息,
 				user:{
-					privilege:'0',
+					privilege:'1',
 					username:'游客1002',
 					face:'/static/img/face.jpg',
 					signature:'点击昵称跳转登录/注册页',

@@ -7,7 +7,7 @@
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place">
-			<uni-search-bar @confirm="search" :focus="true" v-model="searchValue" @blur="blur" @focus="focus" @input="input"
+			<uni-search-bar @confirm="search" :focus="true"  @blur="blur" @focus="focus" @input="input"
 							@cancel="cancel" @clear="clear">
 			</uni-search-bar>
 		</view>
