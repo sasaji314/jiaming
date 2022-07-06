@@ -12,7 +12,8 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"onReachBottomDistance":50
 			}
 		}
         ,{
@@ -20,15 +21,6 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "注册",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/cart/cart",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "购物车",
                 "enablePullDownRefresh": false
             }
             
@@ -60,10 +52,69 @@
             }
             
         }
+        ,{
+            "path" : "pages/goods/goods",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "商品",
+                "enablePullDownRefresh": false
+            }
+        }
+		,{
+			"path": "pages/address/address",
+			"style": {
+				"navigationBarTitleText": "地址",
+				"enablePullDownRefresh": false
+			}
+		}
+		,{
+			"path": "pages/address/edit/edit",
+			"style": {
+				"navigationBarTitleText": "编辑收货地址",
+				"enablePullDownRefresh": false
+			}
+		}
+		
+        ,{
+            "path" : "pages/user/setting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设置",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/userinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "编辑个人信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/vip",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "vip",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/car/car",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "购物车",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTnpm install vue-baidu-map --saveitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
@@ -74,32 +125,32 @@
 			"backgroundColor": "#ffffff",
 			"list": [{
 					"pagePath": "pages/index/index",
-					// "iconPath": "static/img/tabBar/home.png",
-					// "selectedIconPath": "static/img/tabBar/home-on.png",
+					"iconPath": "static/img/tabBar/home.png",
+					"selectedIconPath": "static/img/tabBar/home-on.png",
 					"text": "首页"
 				},
 				{
 					"pagePath": "pages/map/map",
-					// "iconPath": "static/img/tabBar/category.png",
-					// "selectedIconPath": "static/img/tabBar/category-on.png",
+					"iconPath": "static/img/tabBar/map.png",
+					"selectedIconPath": "static/img/tabBar/map-on.png",
 					"text": "地图"
 				},
 				{
 					"pagePath": "pages/video/video",
-					// "iconPath": "static/img/tabBar/category.png",
-					// "selectedIconPath": "static/img/tabBar/category-on.png",
+					"iconPath": "static/img/tabBar/video.png",
+					"selectedIconPath": "static/img/tabBar/video-on.png",
 					"text": "视频"
 				},
 				{
-					"pagePath": "pages/cart/cart",
-					// "iconPath": "static/img/tabBar/cart.png",
-					// "selectedIconPath": "static/img/tabBar/cart-on.png",
+					"pagePath": "pages/car/car",
+					"iconPath": "static/img/tabBar/cart.png",
+					"selectedIconPath": "static/img/tabBar/cart-on.png",
 					"text": "购物车"
 				},
 				{
 					"pagePath": "pages/user/user",
-					// "iconPath": "static/img/tabBar/user.png",
-					// "selectedIconPath": "static/img/tabBar/user-on.png",
+					"iconPath": "static/img/tabBar/user.png",
+					"selectedIconPath": "static/img/tabBar/user-on.png",
 					"text": "我的"
 				}
 			]

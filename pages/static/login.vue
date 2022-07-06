@@ -68,13 +68,23 @@
 							}).then(rep=>{
 								if(rep.data.code == 100){
 									console.log(rep.data.message);
-									uni.showToast({
-										icon:"success",
-										title:rep.data.message
+									let userdata={"userid":rep.data.data.userid,"username":rep.data.data.username,"privilege":rep.data.data.privilege,"tel":rep.data.data.tel,"age":rep.data.data.age,"sex":rep.data.data.sex,"location":rep.data.data.location}
+									console.log(userdata)
+									//存储用户信息到本地
+									uni.setStorage({
+										key:"userInfo",
+										data:userdata,
+										success() {
+											//显示登录成功信息
+											uni.showToast({
+												icon:"success",
+												title:rep.data.message
+											})
+											//跳转到tabBar
+											uni.switchTab({url: '../index/index'});
+											uni.navigateBack();
+										}
 									})
-									//跳转到tabBar
-									uni.switchTab({url: '../index/index'});
-									uni.navigateBack();
 								}else{
 										uni.showToast({
 											icon:"error",
