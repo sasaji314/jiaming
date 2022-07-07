@@ -3,9 +3,9 @@
 		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop}"></view>
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
 			
-			<view class="icon-btn">
+			<!-- <view class="icon-btn" > 
 				<uni-icons @click="toSetting" type="settings" size="30" color="white"></uni-icons>
-			</view>
+			</view> -->
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place">
@@ -14,7 +14,7 @@
 		<view class="user">
 			<!-- 头像 -->
 			<view class="left">
-				<image :src="user.face"></image>
+				<image @tap="toSetting" src="../../static/cat.png"></image>
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">

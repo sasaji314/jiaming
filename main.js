@@ -2,12 +2,15 @@ import App from './App'
 
 // #ifndef VUE3
 import Vue from 'vue'
+//引入兼容手机插件
+import axiosAdapterUniapp from 'axios-adapter-uniapp'
 //引入百度地图
-import BaiduMap from 'vue-baidu-map'
+// import BaiduMap from 'vue-baidu-map'
 import axios from 'axios'
 // 设置反向代理，前端请求默认发送到 http://localhost:8081
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = 'http://localhost:8081'
+axios.defaults.baseURL = 'http://47.112.141.215:8081'
+axios.defaults.adapter = axiosAdapterUniapp
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
@@ -26,8 +29,10 @@ export function createApp() {
 }
 // #endif
 
+// #ifdef H5
 //百度地图引入
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
   ak: '7qImsPSr94NmBsgvwdut0T7GPxwDy85e'
 })
+// #endif

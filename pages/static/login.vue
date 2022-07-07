@@ -66,6 +66,7 @@
 							username:this.username,
 							password:this.password,
 							}).then(rep=>{
+								console.log(rep)
 								if(rep.data.code == 100){
 									console.log(rep.data.message);
 									let userdata={"userid":rep.data.data.userid,"username":rep.data.data.username,"privilege":rep.data.data.privilege,"tel":rep.data.data.tel,"age":rep.data.data.age,"sex":rep.data.data.sex,"location":rep.data.data.location}

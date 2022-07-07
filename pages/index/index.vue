@@ -63,7 +63,7 @@
 					<view class="name">{{ product.goodsname }}</view>
 					<view class="info">
 						<view class="price">￥{{ product.goodsprice }}</view>
-						<view class="slogan">{{ product.introduce }}</view>
+						<!-- <view class="slogan">{{ product.slogan }}</view> -->
 					</view>
 				</view>
 			</view>
@@ -76,6 +76,7 @@
 export default {
 	data() {
 		return {
+			privilege:'',
 			showHeader:true,
 			afterHeaderOpacity: 1,//不透明度
 			headerPosition: 'fixed',
@@ -123,6 +124,15 @@ export default {
 		};
 	},
 	onShow(){
+		let self = this;
+		
+		//先从本地缓存获取用户id
+		uni.getStorage({
+			key:'userInfo',
+			success: (e) => {
+				this.privilege=e.data.privilege
+			}							
+		})
 		
 		console.log("主页页面加载"+'\n')
 		
@@ -131,7 +141,7 @@ export default {
 		}).then(rep=>{
 			if(rep.data.code == 100){
 				console.log(rep.data.message);
-				this.categoryList = rep.data.data
+				self.categoryList = rep.data.data
 			}else{
 					uni.showToast({
 						icon:"error",
@@ -145,7 +155,7 @@ export default {
 		}).then(rep=>{
 			if(rep.data.code == 100){
 				console.log(rep.data.message);
-				this.productList = rep.data.data
+				self.productList = rep.data.data
 			}else{
 					uni.showToast({
 						icon:"error",
@@ -154,21 +164,6 @@ export default {
 				}
 		})
 		
-		// 加载分类的图片
-		// this.$axios.get('/static/cat.png',{
-		// }).then(rep=>{
-		// 	if(rep.data.code == 100){
-		// 		console.log(rep.data.message);
-		// 		this.img = rep
-		// 		// console.log(this.img);
-		// 	}else{
-		// 			uni.showToast({
-		// 				icon:"error",
-		// 				title:rep.data.message
-		// 			})
-		// 		}
-		// })
-		// console.log("图片地址："+this.img)
 	},
 	onPageScroll(e) {
 		//兼容iOS端下拉时顶部漂移
@@ -208,7 +203,13 @@ export default {
 		// }
 	},
 	onLoad() {
-		
+		// //先从本地缓存获取用户id
+		// uni.getStorage({
+		// 	key:'userInfo',
+		// 	success: (e) => {
+		// 		this.privilege=e.data.privilege
+		// 	}							
+		// })
 	},
 	methods: {
 		search(res) {
@@ -254,13 +255,14 @@ export default {
 		},
 		//分类显示
 		showCategory(e) {
+			let self = this;
 			uni.showToast({title: e.catename,icon:"none"});
 			this.$axios.post('/goods/showCategoods',{
 				category:e.id
 			}).then(rep=>{
 				if(rep.data.code == 100){
 					console.log(rep.data.message);
-					this.productList = rep.data.data
+					self.productList = rep.data.data
 				}else{
 						uni.showToast({
 							icon:"error",
@@ -272,9 +274,20 @@ export default {
 		//商品跳转商品详情页
 		toGoods(e) {
 			uni.showToast({ title: '商品' + e.goodsid, icon: 'none' });
-			uni.navigateTo({
-				url: '../goods/goods?goodsid='+e.goodsid
-			});
+			console.log("用户权限："+this.privilege)
+			if( this.privilege == 1 )
+			{
+				uni.showToast({
+					title:'请先升级成为会员',
+					icon:"error",
+				})
+			}
+			else
+			{
+				uni.navigateTo({
+					url: '../goods/goods?goodsid='+e.goodsid
+				});
+			}
 		},
 		//轮播图指示器
 		swiperChange(event) {

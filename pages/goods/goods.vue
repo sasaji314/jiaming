@@ -55,19 +55,23 @@
 			<view class="indicator">{{currentSwiper+1}}/{{swiperList.length}}</view>
 		</view>
 
-		<!-- 标题 价格 -->
+		<!-- 标题 价格-->
 		<view class="info-box goods-info">
 			<view class="price">￥{{goodsData.goodsprice}}</view>
 			<view class="title">
 				{{goodsData.goodsname}}
 			</view>
 		</view>
-		<!-- 描述 -->
-		<view class="">
-			
-		</view>
 		<!-- 服务-规则选择 -->
 		<view class="info-box spec">
+			
+			<view class="row">
+				<view class="text">描述</view>
+			</view>
+			<view class="row">
+				<view class="content">{{goodsData.introduce}}</view>
+			</view>
+			
 			<view class="row" @tap="showService">
 				<view class="text">服务</view>
 				<view class="content">正品保证 七天无理由退换</view>
@@ -89,9 +93,14 @@
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
 			<view class="row">
-				<view class="text">参数</view>
-				<view class="content">生产日期：2022.2.2 厂家地址:福建省厦门市</view>
+				<view class="text">商店名称</view>
+				<view class="content">{{goodsData.shopname}}</view>
+				<!-- <view class="content">{{shopData.shopname}}</view> -->
 			</view>
+			<!-- <view class="row">
+				<view class="text">商店地址</view>
+				<view class="content">{{goodsData.shopid}}</view>
+			</view> -->
 			
 			<view style="height: 50px;">
 				
@@ -127,24 +136,20 @@ export default {
 			serviceClass: '',//服务弹窗css类，控制开关动画
 			specClass: '',//规格弹窗css类，控制开关动画
 			shareClass:'',//分享弹窗css类，控制开关动画
+			//商店信息
+			shopData:{},
+			//用户信息
+			userid:'',
 			// 商品信息
 			goodsData:{
-				// id:1,
-				// name:"商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
-				// price:"127.00",
-				// number:1,
-				// service:[
-				// 	{name:"正品保证",description:"此商品官方保证为正品"},
-				// 	{name:"极速退款",description:"此商品享受退货极速退款服务"},
-				// 	{name:"7天退换",description:"此商品享受7天无理由退换服务"}
-				// ],
-				spec:["XS","S","M","L","XL","XXL"],
-				// comment:{
-				// 	number:102,
-				// 	userface:'../../static/img/face.jpg',
-				// 	username:'大黑哥',
-				// 	content:'很不错，之前买了很多次了，很好看，能放很久，和图片色差不大，值得购买！'
-				// }
+				// goodsid:'',
+				// shopid:'',
+				// goodsname:'',
+				// shopname:'',
+				// goodsprice:'',
+				// category:'',
+				// introduce:'',
+				// img:''
 			},
 			selectSpec:null,//选中规格
 			isKeep:false,//收藏
@@ -172,18 +177,29 @@ export default {
 		};
 	},
 	onLoad(e) {
+		let self = this;
 		// #ifdef MP
 		//小程序隐藏返回按钮
 		this.showBack = false;
 		// #endif
+		
+		//先从本地缓存获取用户id
+		uni.getStorage({
+			key:'userInfo',
+			success: (e) => {
+				this.userid=e.data.userid
+			}							
+		})
+		
 		//option为object类型，会序列化上个页面传递的参数
-		console.log(e.goodsid); //打印出上个页面传递的参数。
+		console.log("传来的商品id："+e.goodsid); //打印出上个页面传递的参数。
+		//显示商品
 		this.$axios.post('/goods/showGoods',{
 			goodsid:e.goodsid
 		}).then(rep=>{
 			if(rep.data.code == 100){
 				console.log(rep.data.message);
-				this.goodsData = rep.data.data
+				self.goodsData = rep.data.data
 			}else{
 					uni.showToast({
 						icon:"error",
@@ -191,6 +207,7 @@ export default {
 					})
 				}
 		})
+	
 	},
 
 	methods: {
@@ -200,19 +217,56 @@ export default {
 		},
 		//点击购物车/店铺 路由跳转
 		onClick(e) {
-			console.log("路由跳转")
 			uni.showToast({
 				title: `点击${e.content.text}`
 			})
 			if(e.content.text == "购物车"){
-				uni.navigateTo({
+				uni.switchTab({
 					url:'../car/car',
+				})
+			}
+			if(e.content.text == "店铺"){
+				uni.navigateTo({
+					url:'../shops/shops?shopid='+this.goodsData.shopid
 				})
 			}
 		},
 		//点击购买/加入购物车按钮
 		buttonClick(e) {
-			console.log(e.content.text);
+			if( e.content.text == "加入购物车" )
+			{
+				console.log("用户id："+this.userid)
+				this.$axios.post('/shoppingcar/add',{
+					goodsid:this.goodsData.goodsid,
+					shopid:this.goodsData.shopid,
+					userid:this.userid,
+					goodsname:this.goodsData.goodsname,
+					shopname:this.goodsData.shopname,
+					goodsnum:1,
+					goodsprice:this.goodsData.goodsprice,
+					img:this.goodsData.img,
+				}).then(rep=>{
+					if(rep.data.code == 100){
+						console.log(rep.data.message);
+						uni.showToast({
+							icon:"success",
+							title:rep.data.message
+						})
+					}else{
+							uni.showToast({
+								icon:"error",
+								title:rep.data.message
+							})
+						}
+				})
+			}
+			else
+			{
+				uni.showToast({
+					icon:"error",
+					title:'功能未开放'
+				})
+			}
 		},
 		//立即购买
 		buy(){

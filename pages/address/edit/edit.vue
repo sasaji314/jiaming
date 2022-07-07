@@ -93,6 +93,7 @@
 				this.isDefault = e.detail.value;
 			},
 			del(){
+				let self = this;
 				uni.showModal({
 					title: '删除提示',
 					content: '你将删除这个收货地址',
@@ -107,7 +108,7 @@
 								if(rep.data.code == 100){
 									console.log(rep.data.message);
 									console.log(rep.data.data);
-									this.addressList = rep.data.data
+									self.addressList = rep.data.data
 									//跳转到地址
 									uni.navigateTo({
 										url:'../address'
@@ -201,23 +202,9 @@
 									icon:"success",
 									title:rep.data.message
 								})
-								// uni.navigateTo({
-								// 	url:'../address'
-								// })
-								// let data = {"userid":this.userid,"id":rep.data.data.adsid,"username":this.username,"tel":this.tel,"address":{"region":this.region,"detailed":this.detailed},"isDefault":this.isDefault}
-								// uni.setStorage({
-								// 	key:'saveAddress',
-								// 	data:data,
-								// 	success() {
-								// 		uni.showToast({
-								// 			icon:"success",
-								// 			title:rep.data.message
-								// 		})
-								// 		uni.navigateTo({
-								// 			url:'../address'
-								// 		})
-								// 	}
-								// })
+								uni.navigateBack({
+									
+								})
 							}else{
 									uni.showToast({
 										icon:"error",
@@ -228,9 +215,7 @@
 					}
 					else{
 						console.log("这是新增")
-						// uni.navigateTo({
-						// 	url:'../address'
-						// })
+	
 						console.log("用户id："+this.userid+'\n'
 						+"姓名："+this.username+"\n"
 						+"电话号码："+this.tel+"\n"
@@ -257,20 +242,6 @@
 								uni.navigateTo({
 									url:'../address'
 								})
-								// let data = {"userid":this.userid,"id":rep.data.data.adsid,"username":this.username,"tel":this.tel,"address":{"region":this.region,"detailed":this.detailed},"isDefault":this.isDefault}
-								// uni.setStorage({
-								// 	key:'saveAddress',
-								// 	data:data,
-								// 	success() {
-								// 		uni.showToast({
-								// 			icon:"success",
-								// 			title:rep.data.message
-								// 		})
-								// 		uni.navigateTo({
-								// 			url:'../address'
-								// 		})
-								// 	}
-								// })
 							}else{
 									uni.showToast({
 										icon:"error",
@@ -280,16 +251,7 @@
 						})	
 						
 					}
-					// uni.setStorage({
-					// 	key:'saveAddress',
-					// 	data:data,
-					// 	success() {
-					// 		uni.hideLoading();
-					// 		uni.navigateTo({
-					// 			url:'../address'
-					// 		})
-					// 	}
-					// })
+
 				},300)
 				
 				

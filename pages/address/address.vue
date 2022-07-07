@@ -45,12 +45,13 @@
 			};
 		},
 		onShow() {
+			let self = this;
 			console.log(this.addressList.length)
 			//先从本地缓存获取用户id
 			uni.getStorage({
 				key:'userInfo',
 				success: (e) => {
-					this.userid=e.data.userid
+					self.userid=e.data.userid
 				}							
 			})
 			setTimeout(()=>{
@@ -60,7 +61,7 @@
 					if(rep.data.code == 100){
 						console.log(rep.data.message);
 						console.log(rep.data.data);
-						this.addressList = rep.data.data
+						self.addressList = rep.data.data
 					}else{
 							uni.showToast({
 								icon:"error",
