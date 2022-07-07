@@ -1,6 +1,11 @@
 <template>
 	<view>
 		<view class="header" :style="{position:headerPosition,top:headerTop}">
+			<view>
+				<uni-search-bar @confirm="search" :focus="true"  @blur="blur" @focus="focus" @input="input"
+								@cancel="cancel" @clear="clear">
+				</uni-search-bar>
+			</view>
 			<view class="target" v-for="(target,index) in orderbyList" @tap="select(index)" :key="index" :class="[target.selected?'on':'']">
 				{{target.text}}
 				<view v-if="target.orderbyicon" class="icon" :class="target.orderbyicon[target.orderby]"></view>
@@ -45,7 +50,7 @@
 				headerTop:"0px",
 				headerPosition:"fixed",
 				orderbyList:[
-					{text:"综合推荐",selected:true,orderbyicon:false,orderby:0},
+					{text:"推荐",selected:true,orderbyicon:false,orderby:0},
 					{text:"价格",selected:false,orderbyicon:['sheng','jiang'],orderby:0},
 				],
 				orderby:"sheng"
@@ -113,6 +118,41 @@
 					this.goodsList.push(p);
 				}
 			},
+			
+			search(res) {
+				uni.showToast({
+					title: '搜索：' + res.value,
+					icon: 'none'
+				})
+			},
+			input(res) {
+				console.log('----input:', res)
+			},
+			clear(res) {
+				uni.showToast({
+					title: 'clear事件，清除值为：' + res.value,
+					icon: 'none'
+				})
+			},
+			blur(res) {
+				uni.showToast({
+					title: 'blur事件，输入值为：' + res.value,
+					icon: 'none'
+				})
+			},
+			focus(e) {
+				uni.showToast({
+					itle: 'focus事件，输出值为：' + e.value,
+					icon: 'none'
+				})
+			},
+			cancel(res) {
+				uni.showToast({
+					title: '点击取消，输入值为：' + res.value,
+					icon: 'none'
+				})
+			},
+			
 			//商品跳转
 			toGoods(e){
 				uni.showToast({title: '商品'+e.goods_id,icon:"none"});

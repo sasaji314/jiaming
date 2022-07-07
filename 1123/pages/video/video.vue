@@ -33,7 +33,7 @@ export default {
 					title: '猫猫视频', 
 					subtitle: '副标题', 
 					extra: '额外信息',
-					src: 'https://cdn.pixabay.com/vimeo/166221773/Cute%20Cat%20-%203092.mp4?width=1280&expiry=1656906870&hash=1b1468660acb772eeb2d1220de9f3e7b03a61d4d',
+					src: 'https://cdn.uviewui.com/uview/resources/video.mp4',
 				},
 				{
 					video_id: '2',
@@ -47,7 +47,7 @@ export default {
 					title: '猫猫视频3', 
 					subtitle: '副标题', 
 					extra: '额外信息',
-					src: 'https://cdn.pixabay.com/vimeo/407701799/Cat%20-%2035733.mp4?width=1280&expiry=1656921950&hash=205040f7e13e6fd619ade71cb03a1df5f8a87a15',
+					src: 'https://cdn.pixabay.com/vimeo/262921865/Dog%20-%2015305.mp4?width=1280&expiry=1657156099&hash=c6dda479e95da46f5f54609fbe82e19498596b42',
 				},
 			],
 			

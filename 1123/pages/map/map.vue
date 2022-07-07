@@ -74,8 +74,10 @@
 			}
 		},
 		methods: {
+			
+		
 			getClickInfo (e) {
-				console.log(e.point.lng, e.point.lat);
+				console.log('所选坐标为：', e.point.lng, e.point.lat);
 				this.destination.lng = e.point.lng;
 				this.destination.lat = e.point.lat;
 			},

@@ -1,28 +1,5 @@
 <template>
 	<view>
-		<view class="status" :style="{ opacity: afterHeaderOpacity }"></view>
-		<view class="header">
-			<!-- 头部-默认显示 -->
-			<view class="before" :style="{ opacity: 1 - afterHeaderOpacity, zIndex: beforeHeaderzIndex }">
-				<view class="back"><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view> 
-				<view class="middle"></view>
-				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="toMsg"></view>
-					<view class="icon cart" @tap="joinCart"></view>
-				</view>
-			</view>
-			<!-- 头部-滚动渐变显示 -->
-			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
-				<view class="back" ><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view>
-				<view class="middle">
-					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
-				</view>
-				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="toMsg"></view>
-					<view class="icon cart" @tap="joinCart"></view>
-				</view>
-			</view>
-		</view>
 		<!-- 底部菜单 -->
 		<uni-goods-nav class="goods-carts" :fill="true" :options="options" :button-group="ButtonGroup" @click="onClick"
 		@buttonClick="buttonClick" />
@@ -33,7 +10,7 @@
 			<view class="layer" @tap.stop="discard">
 				<view class="content">
 					<view class="row" v-for="(item,index) in goodsData.service" :key="index">
-						<view class="title">{{item.name}}</view>
+						<view class="title" style="font-size: 50px;">{{item.name}}</view>
 						<view class="description">{{item.description}}</view>
 					</view>
 				</view>
@@ -111,6 +88,8 @@
 				<view class="content">生产日期：2022.2.2 厂家地址:福建省厦门市</view>
 			</view>
 		</view>
+		<!-- 占位 -->
+		<view style="height: 50px;"></view>
 		<!-- 评价 -->
 		<!-- <view class="info-box comments" id="comments">
 			<view class="row">
@@ -417,130 +396,8 @@ page {
 .icon {
 	font-size: 26upx;
 }
-.status {
-	width: 100%;
-	height: 0;
-	position: fixed;
-	z-index: 10;
-	top: 0;
-	/*  #ifdef  APP-PLUS  */
-	height: var(--status-bar-height); //覆盖样式
-	/*  #endif  */
-	background-color: #f1f1f1;
-	transition: opacity 0.05s linear;
-}
-.header {
-	width: 100%;
 
-	height: 100upx;
-	display: flex;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	z-index: 10;
-	/*  #ifdef  APP-PLUS  */
-	top: var(--status-bar-height);
-	/*  #endif  */
-	.before,
-	.after {
-		width: 92%;
-		padding: 0 4%;
-		height: 100upx;
-		display: flex;
-		align-items: center;
-		position: fixed;
-		top: 0;
-		/*  #ifdef  APP-PLUS  */
-			top: var(--status-bar-height);
-		/*  #endif  */
-		transition: opacity 0.05s linear;
-		.back {
-			width: 125upx;
-			height: 60upx;
-			flex-shrink: 0;
-			.icon {
-				margin-left: -10%;
-				width: 60upx;
-				height: 60upx;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 42upx;
-			}
-		}
-		.middle {
-			width: 100%;
-		}
-		.icon-btn {
-			width: 125upx;
-			height: 60upx;
-			flex-shrink: 0;
-			display: flex;
-			.icon {
-				&:first-child{
-					margin-right: 5upx;
-				}
-				width: 60upx;
-				height: 60upx;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 42upx;
-			}
-		}
-	}
-	.before {
-		.back {
-			.icon {
-				color: #fff;
-				background-color: rgba(0, 0, 0, 0.2);
-				border-radius: 100%;
-			}
-		}
-		.icon-btn {
-			.icon {
-				color: #fff;
-				background-color: rgba(0, 0, 0, 0.2);
-				border-radius: 100%;
-				
-			}
-		}
-	}
-	.after {
-		background-color: #f1f1f1;
-		.back {
-			.icon {
-				color: #666;
-			}
-		}
-		.icon-btn {
-			.icon {
-				color: #666;
-			}
-		}
-		.middle {
-			font-size: 32upx;
-			height: 90upx;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 0 7%;
-			view {
-				width: (100%/3);
-				padding: 0 3%;
-				margin: 0 3%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				&.on {
-					margin-bottom: -4upx;
-					color: #f47952;
-					border-bottom: solid 4upx #f47952;
-				}
-			}
-		}
-	}
-}
+
 .swiper-box {
 	position: relative;
 	width: 100%;
@@ -584,7 +441,7 @@ page {
 		color: #f47925;
 	}
 	.title {
-		font-size: 30upx;
+		font-size: 15px;
 	}
 }
 .spec {
@@ -639,7 +496,7 @@ page {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 26upx;
+		font-size: 26px;
 		color: #999;
 	}
 }
@@ -866,90 +723,11 @@ page {
 		position: fixed;
 		left: 0;
 		right: 0;
+		bottom: 0;
 		/* #ifdef H5 */
 		left: var(--window-left);
 		right: var(--window-right);
 		/* #endif */
-		bottom: 0;
-	}
-// .share{
-// 	display: none;
-// 	&.show {
-// 		display: block;
-// 		.mask{
-// 			animation: showPopup 0.15s linear both;
-// 		}
-// 		.layer {
-// 			animation: showLayer 0.15s linear both;
-// 		}
-// 	}
-// 	&.hide {
-// 		display: block;
-// 		.mask{
-// 			animation: hidePopup 0.15s linear both;
-// 		}
 		
-// 		.layer {
-// 			animation: hideLayer 0.15s linear both;
-// 		}
-// 	}
-// 	&.none {
-// 		display: none;
-// 	}
-// 	.mask{
-// 		background-color: rgba(0,0,0,.5);
-// 		position: fixed;
-// 		width: 100%;
-// 		height: 100%;
-// 		top:0;
-// 		z-index: 11;
-// 	}
-// 	.layer{
-// 		width: 92%;
-// 		position: fixed;
-// 		z-index: 12;
-// 		padding: 0 4%;
-// 		top: 100%;
-// 		background-color: rgba(255,255,255,0.9);
-// 		.list{
-// 			width: 100%;
-// 			display: flex;
-// 			padding:10upx 0 30upx 0;
-// 			.box{
-// 				width: 25%;
-// 				display: flex;
-// 				justify-content: center;
-// 				flex-wrap: wrap;
-// 				image{
-// 					width: 13.8vw;
-// 					height: 13.8vw;
-// 				}
-// 				.title{
-// 					margin-top: 10upx;
-// 					display: flex;
-// 					justify-content: center;
-// 					width: 100%;
-// 					font-size: 26upx;
-// 				}
-// 			}
-// 		}
-// 		.btn{
-// 			width: 100%;
-// 			height: 100upx;
-// 			display: flex;
-// 			justify-content: center;
-// 			align-items: center;
-// 			font-size: 28upx;
-// 			border-top: solid 1upx #666666;
-// 		}
-// 		.h1{
-// 			width: 100%;
-// 			height: 80upx;
-// 			display: flex;
-// 			justify-content: center;
-// 			align-items: center;
-// 			font-size: 34upx;
-// 		}
-// 	}
-// }
+	}
 </style>
