@@ -24,8 +24,11 @@
 		
 		<view class="goods">
 			<text class="allgoods">全部商品</text>
+			<uni-data-checkbox v-model="value" :localdata="range" @change="change"></uni-data-checkbox>
+			
 		<!--商品列表 -->
 			<view class="goods-list">
+				<!-- 全选 -->
 				<view class="product-list">
 					<view class="product" v-for="(goods) in goodsList" :key="goods.goods_id" @tap="toGoods(goods)">
 						<image mode="widthFix" :src="goods.img"></image>
@@ -36,7 +39,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="loading-text">{{loadingText}}</view>
+				
 			</view>
 		</view>
 		
@@ -48,22 +51,36 @@
 		data() {
 			return {
 				goodsList:[
-					{ goods_id: 0, img: '/static/img/goods/p1.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 1, img: '/static/img/goods/p2.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥169', slogan:'1235人付款' },
-					{ goods_id: 2, img: '/static/img/goods/p3.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 3, img: '/static/img/goods/p4.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 4, img: '/static/img/goods/p5.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥170', slogan:'1235人付款' },
-					{ goods_id: 5, img: '/static/img/goods/p6.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 6, img: '/static/img/goods/p7.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 7, img: '/static/img/goods/p8.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 8, img: '/static/img/goods/p9.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 9, img: '/static/img/goods/p10.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' }
+					{ goods_id: 0, img: '/static/img/goods/p1.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' , cate:'1' },
+					{ goods_id: 1, img: '/static/img/goods/p2.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥169', slogan:'1235人付款' , cate:'1' },
+					{ goods_id: 2, img: '/static/img/goods/p3.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' , cate:'2' },
+					{ goods_id: 3, img: '/static/img/goods/p4.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' , cate:'2' },
+					{ goods_id: 4, img: '/static/img/goods/p5.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥170', slogan:'1235人付款' , cate:'1' },
+					// { goods_id: 5, img: '/static/img/goods/p6.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
+					// { goods_id: 6, img: '/static/img/goods/p7.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
+					// { goods_id: 7, img: '/static/img/goods/p8.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
+					// { goods_id: 8, img: '/static/img/goods/p9.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
+					// { goods_id: 9, img: '/static/img/goods/p10.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' }
+				],
+				
+				newGoodsList:[
+					
+				],
+				allList:[
+					
 				],
 				loadingText:"正在加载...",
 				
 				shop:{shopname: 'JM宠物商店' , address: '福建省厦门市集美区天马路114514号' , tel: '11451414251'},
+				value: 0,
+				range: [{"value": 0,"text": "全部"	},{"value": 1,"text": "宠物食品"},{"value": 2,"text": "宠物品种"}]
 			}
 		},
+		
+		mounted:function () {   //自动触发写入的函数
+			this.fuZhi();
+		},
+		
 		methods: {
 			//搜索相关
 			search(res) {
@@ -100,23 +117,67 @@
 				})
 			},
 			
-			//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-			onReachBottom(){
-				uni.showToast({title: '触发上拉加载'});
-				let len = this.goodsList.length;
-				if(len>=40){
-					this.loadingText="到底了";
-					return false;
-				}else{
-					this.loadingText="正在加载...";
+			change(e) {
+				let j = 0;
+				console.log('e:',this.value,this.goodsList.length,this.allList.length);
+				
+				if (this.value == 0){
+					this.goodsList = this.allList;
 				}
-				let end_goods_id = this.goodsList[len-1].goods_id;
-				for(let i=1;i<=10;i++){
-					let goods_id = end_goods_id+i;
-					let p = { goods_id: goods_id, img: '/static/img/goods/p'+(goods_id%10==0?10:goods_id%10)+'.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' };
-					this.goodsList.push(p);
-				}
+				else if(this.value != 0){
+					this.goodsList = this.allList;
+					for(let i=0; i<this.goodsList.length;i++)
+					if(this.goodsList[i].cate==this.value){
+						this.newGoodsList[j++] = this.goodsList[i];	
+					}
+					this.goodsList = this.newGoodsList;
+					this.newGoodsList = [];
+				} 
+				
+				// else if (this.value == 1){
+				// 	this.goodsList = this.allList;
+				// 	for(let i=0; i<this.goodsList.length;i++)
+				// 	if(this.goodsList[i].cate=='1'){
+				// 		this.newGoodsList[j++] = this.goodsList[i];	
+				// 	}
+				// 	this.goodsList = this.newGoodsList;
+				// 	this.newGoodsList = [];
+				// }
+				
+				// else if (this.value == 2){
+				// 	this.goodsList = this.allList;
+				// 	for(let i=0; i<this.goodsList.length;i++)
+				// 	if(this.goodsList[i].cate=='2'){
+				// 		this.newGoodsList[j++] = this.goodsList[i];	
+				// 	}
+				// 	this.goodsList = this.newGoodsList;
+				// 	this.newGoodsList = [];
+				// }
+				
+				
+					
 			},
+			fuZhi(){
+				this.allList = this.goodsList;
+			},
+			
+			//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+			// onReachBottom(){
+			// 	uni.showToast({title: '触发上拉加载'});
+			// 	let len = this.goodsList.length;
+			// 	if(len>=40){
+			// 		this.loadingText="到底了";
+			// 		return false;
+			// 	}else{
+			// 		this.loadingText="正在加载...";
+			// 	}
+			// 	let end_goods_id = this.goodsList[len-1].goods_id;
+			// 	for(let i=1;i<=10;i++){
+			// 		let goods_id = end_goods_id+i;
+			// 		let p = { goods_id: goods_id, img: '/static/img/goods/p'+(goods_id%10==0?10:goods_id%10)+'.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' };
+			// 		this.goodsList.push(p);
+			// 	}
+			// },
 		}
 	}
 </script>

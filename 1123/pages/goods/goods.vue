@@ -47,12 +47,14 @@
 		</view>
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
-			<swiper circular="true" autoplay="true" @change="swiperChange">
-				<swiper-item v-for="swiper in swiperList" :key="swiper.id">
-					<image :src="swiper.img"></image>
+			<!-- <swiper circular="true" autoplay="true" @change="swiperChange">
+				<swiper-item v-for="swiper in swiperList" @tap="showBigImg(swiper.img,swiperList.img)" :key="swiper.id">
+					<image :src="swiper.img" ></image>
 				</swiper-item>
-			</swiper>
-			<view class="indicator">{{currentSwiper+1}}/{{swiperList.length}}</view>
+			</swiper> -->
+			
+			<!-- <view class="indicator">{{currentSwiper+1}}/{{swiperList.length}}</view> -->
+			<image :src="swiperList[0].img" @tap="showBigImg(swiperList[0].img)" ></image>
 		</view>
 		<!-- 标题 价格 -->
 		<view class="info-box goods-info">
@@ -351,6 +353,17 @@ export default {
 		},
 		discard() {
 			//丢弃
+		},
+		
+		showBigImg(srclist){
+			uni.previewImage({
+				current:'',
+				urls: [srclist],
+				success: function(res) {},
+				fail: function(res) {},
+				complete: function(res) {},
+			});
+			console.log(srclist);
 		}
 	}
 };
@@ -402,16 +415,27 @@ page {
 	position: relative;
 	width: 100%;
 	height: 100vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	swiper {
 		width: 100%;
 		height: 100vw;
 		swiper-item {
 			image {
+				position: absolute;
 				width: 100%;
 				height: 100vw;
 			}
 		}
 	}
+	image {
+		position: absolute;
+		width: 100%;
+		height: 100vw;
+	}
+	
 	.indicator{
 		display: flex;
 		justify-content: center;

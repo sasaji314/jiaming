@@ -141,10 +141,12 @@
 					url:'../user/vip/vip'
 				})
 			},
-			// toOrderList(index){
-			// 	uni.setStorageSync('tbIndex',index);
-			// 	uni.navigateTo({url:'../../user/order_list/order_list?tbIndex='+index}) 
-			// },
+			toOrderList(index){
+				uni.setStorageSync('tbIndex',index);
+				uni.navigateTo({url:'order_list/order_list?tbIndex='+index});
+				console.log(1)
+					
+			},
 			toSetting(){
 				uni.navigateTo({
 					url:'../../user/setting/setting'

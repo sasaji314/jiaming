@@ -18,7 +18,8 @@
         },
         /* 模块配置 */
         "modules" : {
-            "Maps" : {}
+            "Maps" : {},
+            "Geolocation" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -47,7 +48,19 @@
             "ios" : {},
             /* SDK配置 */
             "sdkConfigs" : {
-                "maps" : {}
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "",
+                        "appkey_android" : "4b8b2424c20d65e9f7707a6b86be8f1c"
+                    }
+                },
+                "geolocation" : {
+                    "amap" : {
+                        "__platform__" : [ "android" ],
+                        "appkey_ios" : "",
+                        "appkey_android" : "4b8b2424c20d65e9f7707a6b86be8f1c"
+                    }
+                }
             }
         }
     },
@@ -76,11 +89,7 @@
     "vueVersion" : "2",
     "h5" : {
         "sdkConfigs" : {
-            "maps" : {
-                "qqmap" : {
-                    "key" : "VEKBZ-3IWCU-7U4V3-BEDOU-XTRDV-YZBY3"
-                }
-            }
+            "maps" : {}
         }
     }
 }

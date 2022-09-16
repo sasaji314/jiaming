@@ -8,10 +8,12 @@
 			ceshi
 			
 		</view>
-		<uni-search-bar @confirm="search" :focus="true" v-model="searchValue" @blur="blur" @focus="focus" @input="input"
+		
+		<image  class="test" :src="swiperList[0].img" @tap="showBigImg(swiperList[0].img)" ></image>
+		<!-- <uni-search-bar @confirm="search" :focus="true" v-model="searchValue" @blur="blur" @focus="focus" @input="input"
 						@cancel="cancel" @clear="clear">
 		</uni-search-bar>
-
+ -->
 	</view>
 </template>
 
@@ -19,7 +21,13 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello',
+				swiperList: [
+					{ id: 1, img: 'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg' },
+					{ id: 2, img: 'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg' },
+					{ id: 3, img: 'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg' },
+					{ id: 4, img: 'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg' }
+				],
 			}
 		},
 		onLoad() {
@@ -65,6 +73,17 @@
 					icon: 'none'
 				})
 			},
+			
+			showBigImg(srclist){
+				uni.previewImage({
+					current:'',
+					urls: [srclist],
+					success: function(res) {},
+					fail: function(res) {},
+					complete: function(res) {},
+				});
+				console.log(srclist);
+			},
 		}
 	}
 </script>
@@ -75,6 +94,15 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		
+		.test{
+			height: 200rpx;
+			width: 200rpx;
+			margin-top: 200rpx;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 50rpx;
+		}
 	}
 	.box{
 		border: 1px red solid;
